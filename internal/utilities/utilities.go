@@ -3,6 +3,7 @@ package utilities
 import "io"
 import "os"
 import "os/exec"
+import "strings"
 
 func GetEntries(str string) []string {
 	start := 0
@@ -16,8 +17,8 @@ func GetEntries(str string) []string {
 
 	for i := start; i < len(str); i++ {
 		for j := i; j < len(str) - 1; j++ {
-			if rune(str[j]) == rune(';') && rune(str[j+1]) != rune(';') {
-				entries = append(entries, str[i:j-2])
+			if rune(str[j]) == rune(';') && rune(str[j-1]) != rune('\\') && rune(str[j+1]) != rune('\\') {
+				entries = append(entries, strings.ReplaceAll(str[i:j], "\\;", ";"))
 				i = j+1
 				continue
 			}
